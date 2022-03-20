@@ -17,6 +17,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { ArticleListItemComponent } from './components/article-list-item/article-list-item.component';
 import {MatListModule} from '@angular/material/list';
 import {MatRippleModule} from '@angular/material/core';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatButtonModule,
     MatToolbarModule,
     MatRippleModule,
+    MatGridListModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

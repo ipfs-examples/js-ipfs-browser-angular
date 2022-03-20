@@ -1,4 +1,19 @@
-mat-list-item {
+mat-list-item > *{
   height: 100px;
   width: 100%;
+}
+.thumbnail {
+  width: 145px;
+  height: 80px;
+  margin: 8px 8px 8px 8px;
+}
+.article-item--root {
+  display: flex;
+  flex-direction: row;
+}
+.article-item--text {
+  max-height: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
