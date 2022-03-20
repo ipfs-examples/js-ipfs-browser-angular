@@ -1,31 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { IpfsService } from './ipfs.service';
+import { IpfsService } from './services/ipfs.service';
+import { OrbitDbService } from './services/orbit-db.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'browser-angular';
-  id: string | null = null;
-  version: string | null  = null;
-  status: string | null  = null;
-
-  constructor(private IPFSService: IpfsService) {}
-
-  ngOnInit() {
-    this.start();
+  constructor(private orbitDbService: OrbitDbService) {}
+  testPut() {
+    this.orbitDbService.testPut();
   }
 
-  async start() {
-    const id = await this.IPFSService.getId();
-    this.id = id.id;
 
-    const version = await this.IPFSService.getVersion();
-    this.version = version.version
-
-    const status = await this.IPFSService.getStatus();
-    this.status = status ? 'Online' : 'Offline'
-  }
 }

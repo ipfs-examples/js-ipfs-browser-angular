@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ArticlesListComponent } from './components/articles-list/articles-list.component';
+import { SingleArticleComponent } from './components/single-article/single-article.component';
 
-const routes: Routes = [];
+const routes: Routes = [{
+  component: ArticlesListComponent,
+  path: '',
+}, {
+  component: SingleArticleComponent,
+  path: 'single/:id'
+}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

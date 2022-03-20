@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { IPFS, create } from 'ipfs-core';
 import * as IPFS_ROOT_TYPES from 'ipfs-core-types/src/root';
-import { BehaviorSubject, } from 'rxjs';
+import { BehaviorSubject, filter, } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class IpfsService {
   private _ipfsSource = new BehaviorSubject<null | IPFS>(null);
+  public ipfs$ = this._ipfsSource.asObservable().pipe(filter(x => !!x));
   private _createIPFSNodePromise: Promise<IPFS>;
 
   private get ipfs() {
@@ -17,7 +18,8 @@ export class IpfsService {
       if (node == null) {
         console.log("Waiting node creation...")
 
-        node = await this._createIPFSNodePromise as IPFS
+        node = await this._createIPFSNodePromise as IPFS;
+        console.log('created node', node);
         this._ipfsSource.next(node);
       }
 
@@ -30,7 +32,16 @@ export class IpfsService {
   constructor() {
     console.log("Starting new node...")
 
-    this._createIPFSNodePromise = create()
+    this._createIPFSNodePromise = create({
+      EXPERIMENTAL: {
+        ipnsPubsub: true
+      },
+      preload: {
+        enabled: true,
+        cache: 5
+      },
+      offline: true,
+    })
   }
 
   /**

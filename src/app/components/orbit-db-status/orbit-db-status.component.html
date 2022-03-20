@@ -1,0 +1,11 @@
+<div *ngIf="!loading" data-test="ipfs-info">
+  <p>
+    <b>OrbitDb docstore address:</b><span>{{ orbitDbData?.address }}</span>
+  </p>
+  <p>
+    <b>Your public key:</b><span>{{ orbitDbData?.identity }}</span>
+  </p>
+  <p>
+    <b>Write access:</b><span>{{ orbitDbData?.own ? 'true' : 'false' }}</span>
+  </p>
+</div>

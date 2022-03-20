@@ -1,0 +1,17 @@
+<div *ngIf="id != null; else loading" data-test="ipfs-info">
+  <p>
+    <b>IPFS:</b><span data-test="ipfs-info-id">{{ id }}</span>
+  </p>
+  <p>
+    <b>Version:</b><span data-test="ipfs-info-version">{{ version }}</span>
+  </p>
+  <p>
+    <b>Status:</b><span data-test="ipfs-info-status">{{ status }}</span>
+  </p>
+</div>
+
+<ng-template #loading>
+  <p>
+    <b>Loading...</b>
+  </p>
+</ng-template>

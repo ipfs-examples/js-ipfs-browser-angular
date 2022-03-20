@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  rootDirectory: 'example-uncensorable-dapp',
+  rootAddress: '/orbitdb/zdpuAzHF2ERLy475BaLsQb8SQU8LQ2s7okSUupwSJHpErNUPd/example-uncensorable-dapp',
 };
 
 /*
