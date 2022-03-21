@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ArticlesListComponent } from './components/articles-list/articles-list.component';
-import { CreateArticleComponent } from './components/create-article/create-article.component';
+import { ArticlesListComponent } from './pages/articles-list/articles-list.component';
+import { CreateArticleComponent } from './pages/create-article/create-article.component';
 import { SingleArticleComponent } from './components/single-article/single-article.component';
+import { StatusPageComponent } from './pages/status-page/status-page.component';
 
 const routes: Routes = [{
   component: ArticlesListComponent,
@@ -13,6 +14,9 @@ const routes: Routes = [{
 }, {
   component: CreateArticleComponent,
   path: 'create-article'
+}, {
+  component: StatusPageComponent,
+  path: 'status'
 }];
 
 @NgModule({

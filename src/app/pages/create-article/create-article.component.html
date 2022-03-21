@@ -1,0 +1,21 @@
+<mat-card>
+  <form [formGroup]="addArticleForm" class="form-wrapper">
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter title</mat-label>
+        <input
+          matInput
+          placeholder="Hello decentralized world"
+          formControlName="title"
+          required
+        />
+      </mat-form-field>
+      <quill-editor
+        placeholder="Enter Text"
+        [modules]="quillConfig"
+        (onSelectionChanged)="onSelectionChanged($event)"
+        (onContentChanged)="onContentChanged($event)"
+      ></quill-editor>
+    </mat-card-content>
+  </form>
+</mat-card>

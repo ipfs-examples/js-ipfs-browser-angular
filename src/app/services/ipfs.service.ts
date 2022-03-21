@@ -14,7 +14,6 @@ export class IpfsService {
   private get ipfs() {
     const getter = async () => {
       let node = this._ipfsSource.getValue();
-
       if (node == null) {
         console.log("Waiting node creation...")
 

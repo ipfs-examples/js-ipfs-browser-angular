@@ -9,10 +9,5 @@ import { OrbitDbService } from './services/orbit-db.service';
 })
 export class AppComponent {
   title = 'browser-angular';
-  constructor(private orbitDbService: OrbitDbService) {}
-  testPut() {
-    this.orbitDbService.testPut();
-  }
-
-
+  constructor() {}
 }

@@ -30,7 +30,9 @@
     "ipfs-core": "^0.14.0",
     "ipfs-core-types": "^0.10.0",
     "ngx-logger": "^5.0.9",
+    "ngx-quill": "^16.2.0",
     "orbit-db": "^0.28.3",
+    "quill": "^1.3.7",
     "rxjs": "^7.5.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

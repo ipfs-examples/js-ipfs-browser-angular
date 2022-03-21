@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+  <button *ngIf="toolbarService.backButton" mat-button (click)="back()"><mat-icon>keyboard_backspace</mat-icon></button>
+  <div class="toolbar-items">
+    <span>{{toolbarService.currentTitle}}</span>
+  </div>
+  <div class="toolbar-options">
+    <button mat-button *ngFor="let button of toolbarService.currentOptions.buttons"><mat-icon>save</mat-icon>{{button.label}}</button>
+  </div>
+</mat-toolbar>

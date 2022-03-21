@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OrbitDbService } from 'src/app/services/orbit-db.service';
+import { ArticleDTO, OrbitDbService } from 'src/app/services/orbit-db.service';
+import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
   templateUrl: './articles-list.component.html',
@@ -16,10 +17,18 @@ export class ArticlesListComponent implements OnInit {
     title: 'Help fight censorship',
     description: 'join our Discord and Telegram channels',
     thumbnail: 'avatar-2d7e7cd9ea5721160b7dbcbe6d95d682.jpg'
-  }]
-  constructor(public orbitDb: OrbitDbService) { }
+  }];
+  loading = true;
+  constructor(public orbitDb: OrbitDbService, private toolbarService: ToolbarService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.orbitDb.getArticles$().subscribe((articles: ArticleDTO[]) => {
+      console.log('got articles', articles);
+      this.articles = articles;
+    });
+    this.toolbarService.setButtons({ buttons: [] });
+    this.toolbarService.setTitle('List of articles');
+    this.toolbarService.setBackButton(false);
   }
 
 }
