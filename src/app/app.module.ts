@@ -29,6 +29,8 @@ import { ToolbarService } from './services/toolbar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { AddImageButtonComponent } from './components/add-image-button/add-image-button.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { MatDividerModule } from '@angular/material/divider';
     StatusPageComponent,
     ToolbarComponent,
     FooterComponent,
+    AddImageButtonComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { MatDividerModule } from '@angular/material/divider';
     ReactiveFormsModule,
     MatGridListModule,
     MatDividerModule,
+    NgxFileDropModule,
     FormsModule,
     QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

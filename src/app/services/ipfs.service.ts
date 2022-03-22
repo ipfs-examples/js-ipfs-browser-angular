@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IPFS, create } from 'ipfs-core';
 import * as IPFS_ROOT_TYPES from 'ipfs-core-types/src/root';
-import { BehaviorSubject, filter, } from 'rxjs';
+import { BehaviorSubject, filter, from, Observable, switchMap, } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -39,15 +39,7 @@ export class IpfsService {
         ipnsPubsub: true
       },
       config: {
-        Addresses: {
-          Swarm: [
-            '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            '/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star',
-            '/ip4/85.222.97.102/tcp/48389/p2p/12D3KooWHHcwhVgQmnHvCgGAkRxRzUyNnr7g3ixNErUBeVJghGc9',
-            '/ip4/85.222.97.102/udp/48389/quic/p2p/12D3KooWHHcwhVgQmnHvCgGAkRxRzUyNnr7g3ixNErUBeVJghGc9'
-           ]
-        },
+        Addresses: environment.IPFSConfigAddresses,
         "Discovery": {
           "MDNS": {
             "Enabled": false,
@@ -91,5 +83,16 @@ export class IpfsService {
   async getStatus(): Promise<boolean> {
     const node = await this.ipfs;
     return await node.isOnline();
+  }
+
+  uploadFile(path: string, fileContent: Uint8Array | Blob | String | Iterable<Uint8Array> | Iterable<number> | AsyncIterable<Uint8Array> | ReadableStream<Uint8Array>): Observable<any> {
+    return this._ipfsSource.asObservable().pipe(
+      switchMap((ipfs) => {
+        return from((ipfs as any).files.write(path, fileContent, {
+          create: true,
+          flush: true
+        }))
+      })
+    )
   }
 }
