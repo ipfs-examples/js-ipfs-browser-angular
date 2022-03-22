@@ -4,7 +4,8 @@
   </a>
 </p>
 
-<h3 align="center"><b>IPFS Angular App</b></h3>
+<h3 align="center"><b>dPress</b></h3>
+<h4>Censorship-resistant blog platform</h4>
 
 <p align="center">
   <b><i>Using js-ipfs with `Angular`</i></b>
