@@ -7,15 +7,20 @@
           matInput
           placeholder="Hello decentralized world"
           formControlName="title"
+          [disabled]="lock"
           required
         />
       </mat-form-field>
       <quill-editor
+        [readOnly]="lock"
+        [styles]="{ height: '300px' }"
         placeholder="Enter Text"
         [modules]="quillConfig"
         (onSelectionChanged)="onSelectionChanged($event)"
         (onContentChanged)="onContentChanged($event)"
       ></quill-editor>
+
+      <mat-divider></mat-divider>
     </mat-card-content>
   </form>
 </mat-card>

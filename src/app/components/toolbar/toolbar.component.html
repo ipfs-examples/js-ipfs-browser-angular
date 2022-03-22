@@ -4,6 +4,6 @@
     <span>{{toolbarService.currentTitle}}</span>
   </div>
   <div class="toolbar-options">
-    <button mat-button *ngFor="let button of toolbarService.currentOptions.buttons"><mat-icon>save</mat-icon>{{button.label}}</button>
+    <button mat-button (click)="optionClick(button)" *ngFor="let button of toolbarService.currentOptions.buttons"><mat-icon>save</mat-icon>{{button.label}}</button>
   </div>
 </mat-toolbar>

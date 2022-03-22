@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { OrbitDbService } from 'src/app/services/orbit-db.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
@@ -9,6 +11,7 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
 export class CreateArticleComponent implements OnInit {
   addArticleForm: FormGroup;
   htmlText: string = '';
+  lock = false;
   quillConfig = {
     //toolbar: '.toolbar',
     toolbar: {
@@ -33,10 +36,14 @@ export class CreateArticleComponent implements OnInit {
       ],
     },
   };
-  constructor(private formBuilder: FormBuilder, private toolbarService: ToolbarService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private toolbarService: ToolbarService,
+    private orbitDbService: OrbitDbService,
+    private router: Router) {
     this.addArticleForm = this.formBuilder.group({
       title: ['', Validators.required],
-      text: ['', Validators.required]
+      html: ['', Validators.required]
     });
   }
   ngOnInit(): void {
@@ -45,10 +52,26 @@ export class CreateArticleComponent implements OnInit {
       buttons: [
         {
           icon: 'save',
-          label: 'Publish'
+          label: 'Publish',
+          callback: () => this.publish()
         }
       ]
     })
+  }
+
+  publish(): void {
+    this.lock = true;
+    if (this.addArticleForm.valid) {
+      this.orbitDbService.saveArticle({
+        _id: this.addArticleForm.get('title')!.value.replace(' ', '-').toLowerCase().substring(0, 16),
+        title: this.addArticleForm.get('title')!.value,
+        html: this.addArticleForm.get('html')!.value
+      }).then((article) => {
+        console.log('saved article', article);
+        this.router.navigate(['']);
+      })
+    }
+
   }
 
   onSelectionChanged(e: any) {
@@ -56,7 +79,7 @@ export class CreateArticleComponent implements OnInit {
   }
 
   onContentChanged(e: any) {
-    console.log('onContentChanged', e);
+    this.addArticleForm.controls.html.setValue(e.html);
   }
 
 }

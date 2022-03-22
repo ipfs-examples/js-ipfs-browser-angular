@@ -2,8 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 
 export interface ArticleListItem {
   title: string;
-  description: string;
-  thumbnail: string;
+  html: string;
 }
 
 @Component({

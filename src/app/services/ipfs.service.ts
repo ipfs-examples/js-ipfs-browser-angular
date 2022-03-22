@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IPFS, create } from 'ipfs-core';
 import * as IPFS_ROOT_TYPES from 'ipfs-core-types/src/root';
 import { BehaviorSubject, filter, } from 'rxjs';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,15 +33,37 @@ export class IpfsService {
     console.log("Starting new node...")
 
     this._createIPFSNodePromise = create({
+      start: true,
+      repo: environment.rootDirectory,
       EXPERIMENTAL: {
         ipnsPubsub: true
       },
-      preload: {
-        enabled: true,
-        cache: 5
+      config: {
+        Addresses: {
+          Swarm: [
+            '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            '/ip4/127.0.0.1/tcp/13579/wss/p2p-webrtc-star',
+            '/ip4/85.222.97.102/tcp/48389/p2p/12D3KooWHHcwhVgQmnHvCgGAkRxRzUyNnr7g3ixNErUBeVJghGc9',
+            '/ip4/85.222.97.102/udp/48389/quic/p2p/12D3KooWHHcwhVgQmnHvCgGAkRxRzUyNnr7g3ixNErUBeVJghGc9'
+           ]
+        },
+        "Discovery": {
+          "MDNS": {
+            "Enabled": false,
+            "Interval": 10
+          },
+          "webRTCStar": {
+            "Enabled": true
+          }
+        },
+        "Bootstrap": [
+          "/dns4/wss0.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic",
+          "/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6"
+        ]
       },
-      offline: true,
     })
+    console.log('IPFS Node', this.ipfs);
   }
 
   /**

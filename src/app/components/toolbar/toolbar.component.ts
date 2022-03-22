@@ -17,4 +17,12 @@ export class ToolbarComponent implements OnInit {
   back(): void {
     this.router.navigate(['..']);
   }
+
+  optionClick(button: {link?: string, callback?: Function}): void {
+    if (button.link) {
+      this.router.navigateByUrl(button.link);
+    } else if (button.callback) {
+      button.callback();
+    }
+  }
 }

@@ -4,6 +4,8 @@ export interface Options {
   buttons: {
     icon: string;
     label: string;
+    link?: string;
+    callback?: Function;
   }[];
 }
 

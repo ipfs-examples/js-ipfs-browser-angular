@@ -2,7 +2,15 @@ import { Injectable } from '@angular/core';
 import OrbitDB from 'orbit-db';
 import OrbitDb from 'orbit-db';
 import DocumentStore from 'orbit-db-docstore';
-import { BehaviorSubject, filter, from, Observable, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  from,
+  Observable,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IpfsService } from './ipfs.service';
 
@@ -14,11 +22,11 @@ export interface OrbitDbInited {
 
 export interface ArticleDTO {
   title: string;
-  description: string;
-  createdAt: string;
+  html: string;
+  // createdAt: string;
   _id: string;
-  thumbnail: string;
-  video: string;
+  // thumbnail: string;
+  // video: string;
 }
 
 @Injectable({
@@ -28,7 +36,11 @@ export class OrbitDbService {
   private orbitInstance: any;
   private orbitStore: any;
   private orbitInitedSubject = new BehaviorSubject<OrbitDbInited | null>(null);
-  public orbitInited$ = this.orbitInitedSubject.asObservable();
+  public orbitInited$ = this.orbitInitedSubject
+    .asObservable()
+    .pipe(filter((x) => !!x));
+  private replicatedSubject = new Subject<string>();
+  private replicated$ = this.replicatedSubject.asObservable();
   constructor(private ipfsService: IpfsService) {}
 
   init() {
@@ -52,6 +64,46 @@ export class OrbitDbService {
     });
   }
 
+  private setEvents(): void {
+    this.orbitStore.events.on('ready', (dbname: string) => {
+      console.log('ORBITDB: ready', dbname);
+      this.replicatedSubject.next('');
+
+    });
+
+    this.orbitStore.events.on('write', (address: string, entry: any) => {
+      console.log('ORBITDB: write', address, entry);
+    });
+
+    this.orbitStore.events.on('peer', (peer: any) => {
+      console.log('ORBITDB: peer', peer);
+    });
+
+    this.orbitStore.events.on('replicated', (address: string) => {
+      console.log('replicated', address);
+      this.replicatedSubject.next(address);
+    });
+
+    this.orbitStore.events.on(
+      'load.progress',
+      (
+        address: string,
+        _hash: string,
+        _entry: any,
+        progress: string,
+        total: string
+      ) => {
+        console.log('load.progress', progress, total);
+
+      }
+    );
+
+    this.orbitStore.events.on('load', () => {
+      console.log('ORBITDB: load')
+      this.replicatedSubject.next('');
+    });
+  }
+
   // async testPut() {
   //   const entity = await this.orbitStore.put(
   //     { _id: 'test2', description: 'testput' },
@@ -69,14 +121,22 @@ export class OrbitDbService {
   private async loadStore() {
     // load store from environment
     this.orbitStore = await this.orbitInstance!.docstore(
-      environment.rootAddress
+      environment.rootAddress,
+      {
+        create: true,
+        sync: true,
+      }
     );
-    await this.orbitStore.load();
+    console.log('loaded store', this.orbitStore);
+    this.setEvents();
 
+    await this.orbitStore.load();
   }
 
   private async createStore() {
     const options = {
+      create: true,
+      sync: true,
       // Give write access to ourselves
       accessController: {
         write: [this.orbitInstance.identity.id],
@@ -86,25 +146,25 @@ export class OrbitDbService {
       environment.rootDirectory,
       options
     );
+    this.setEvents();
+
     console.log(
       'created new database at address',
       this.orbitStore.address.toString()
     );
-
   }
 
   public getArticles$(skip = 0): Observable<ArticleDTO[]> {
-    return this.orbitInited$.pipe(
-      filter((x: OrbitDbInited | null) => !!x),
-      switchMap(async() => {
+    return this.replicated$.pipe(
+      switchMap(async () => {
         const results = await this.orbitStore.get('');
         return results;
       }),
-      tap(x => console.log('articles', x))
+      tap((x) => console.log('articles', x))
     );
   }
 
-  private async saveArticle(articleDto: ArticleDTO) {
+  public async saveArticle(articleDto: ArticleDTO) {
     const entity = await this.orbitStore.put(articleDto, { pin: true });
     return entity;
   }

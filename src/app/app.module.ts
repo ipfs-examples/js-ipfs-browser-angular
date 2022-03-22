@@ -28,6 +28,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ToolbarService } from './services/toolbar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FooterComponent } from './components/footer/footer.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -57,13 +58,14 @@ import { FooterComponent } from './components/footer/footer.component';
     MatListModule,
     ReactiveFormsModule,
     MatGridListModule,
+    MatDividerModule,
     FormsModule,
     QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
+      registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
   providers: [IpfsService, OrbitDbService, ToolbarService],

@@ -1,3 +1,6 @@
+mat-card {
+  height: calc(100%-32px);
+}
 mat-form-field {
   width: 100%;
 }
