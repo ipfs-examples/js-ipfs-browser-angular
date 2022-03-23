@@ -1,3 +1,5 @@
+import { ImageLoaderComponent } from './components/image-loader/image-loader.component';
+import { ImageService } from './services/image.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,6 +47,7 @@ import { AddImageButtonComponent } from './components/add-image-button/add-image
     ToolbarComponent,
     FooterComponent,
     AddImageButtonComponent,
+    ImageLoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -72,11 +75,12 @@ import { AddImageButtonComponent } from './components/add-image-button/add-image
       registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
-  providers: [IpfsService, OrbitDbService, ToolbarService],
+  providers: [IpfsService, OrbitDbService, ToolbarService, ImageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private orbitDbService: OrbitDbService) {
+  constructor(private orbitDbService: OrbitDbService, private ipfsService: IpfsService) {
+    this.ipfsService.init();
     this.orbitDbService.init();
   }
 }

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { NgxFileDropEntry } from 'ngx-file-drop';
 
 @Component({
   selector: 'app-add-image-button',
@@ -6,52 +7,49 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./add-image-button.component.css']
 })
 export class AddImageButtonComponent implements OnInit {
-  public imagePath: string | ArrayBuffer = '';
+  public imagePath: string | ArrayBuffer | null = null;
+  private file: NgxFileDropEntry | null = null;
+  @Output()
+  loaded = new EventEmitter<File>();
 
-  @Input()
-  error: string = '';
+  @Output()
+  error = new EventEmitter<string>();
+  
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public dropped(filesDropped: any): void {
-    console.log('files', filesDropped);
-    // this.files = files;
-    // let extension = this.regex.exec(this.fileName);
-    // for (const droppedFile of files) {
+  public dropped(files: NgxFileDropEntry[]): void {
+    this.file = files[0];
+    for (const droppedFile of files) {
 
-    //   // Is it a file?
-    //   if (droppedFile.fileEntry.isFile) {
-    //     const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-    //     fileEntry.file((file: File) => {
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
 
-    //       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-    //         this.error = "Niewłaściwy format pliku. Obsługujemy JPEG i PNG"
-    //         return;
-    //       }
-
-
-    //       // Here you can access the real file
-    //       const reader = new FileReader();
-    //       reader.onload = () => {
-    //         this.imagePath = reader.result;
-    //         this.loaded.emit(file);
-    //       };
-    //       reader.readAsDataURL(file);
-    //       return this.isFileAllowed;
-    //     });
-    //   }
+          // Here you can access the real file
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.imagePath = reader.result;
+            this.loaded.emit(file);
+          };
+          reader.onerror = (e: any) => {
+            this.error.next(e);
+          }
+          reader.readAsDataURL(file);
+        });
+      }
 
 
-    // }
+    }
 
   }
 
   invokeSelector($event: any, openFileSelected: (event: any) => any) {
     $event.preventDefault();
     $event.stopPropagation();
-    this.error = '';
     openFileSelected($event);
   }
 
