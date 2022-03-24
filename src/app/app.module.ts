@@ -1,3 +1,5 @@
+import { ImageLoaderComponent } from './components/image-loader/image-loader.component';
+import { ImageService } from './services/image.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +35,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { UnhtmlPipe } from './pipes/unhtml.pipe';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SafeHtmlPipe } from './pipes/safehtml.pipe';
+import { AddImageButtonComponent } from './components/add-image-button/add-image-button.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import { SafeHtmlPipe } from './pipes/safehtml.pipe';
     AddImageButtonComponent,
     ImageLoaderComponent,
     UnhtmlPipe,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    ImageLoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -78,11 +82,12 @@ import { SafeHtmlPipe } from './pipes/safehtml.pipe';
       registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
-  providers: [IpfsService, OrbitDbService, ToolbarService],
+  providers: [IpfsService, OrbitDbService, ToolbarService, ImageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private orbitDbService: OrbitDbService) {
+  constructor(private orbitDbService: OrbitDbService, private ipfsService: IpfsService) {
+    this.ipfsService.init();
     this.orbitDbService.init();
   }
 }

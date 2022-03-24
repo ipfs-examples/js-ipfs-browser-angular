@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ImageService } from 'src/app/services/image.service';
 import { OrbitDbService } from 'src/app/services/orbit-db.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 
@@ -9,6 +10,7 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
   styleUrls: ['./create-article.component.css'],
 })
 export class CreateArticleComponent implements OnInit {
+  newThumbnail: any;
   addArticleForm: FormGroup;
   htmlText: string = '';
   lock = false;
@@ -40,6 +42,7 @@ export class CreateArticleComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toolbarService: ToolbarService,
     private orbitDbService: OrbitDbService,
+    private imageService: ImageService,
     private router: Router) {
     this.addArticleForm = this.formBuilder.group({
       title: ['', Validators.required],

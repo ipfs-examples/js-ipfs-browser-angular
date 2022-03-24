@@ -1,6 +1,6 @@
 <mat-list-item  *ngIf="article">
   <div matRipple class="article-item--root">
-    <!-- <img class="thumbnail" [src]="'../../../assets/example-img/' + article.thumbnail"/> -->
+    <app-image-loader [path]="article.thumbnail"></app-image-loader>
     <div class="article-item--text">
       <div class="mat-subheading-1">{{article.title}}</div>
       <span class="mat-caption">{{article.html | unhtml }}</span>

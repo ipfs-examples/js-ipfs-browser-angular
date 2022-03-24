@@ -1,0 +1,5 @@
+.ipfs-info > span{
+    width: 80%;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+}
