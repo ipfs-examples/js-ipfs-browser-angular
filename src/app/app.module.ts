@@ -20,7 +20,7 @@ import { ArticlesListComponent } from './pages/articles-list/articles-list.compo
 import { CreateArticleComponent } from './pages/create-article/create-article.component';
 import { IpfsStatusComponent } from './components/ipfs-status/ipfs-status.component';
 import { OrbitDbStatusComponent } from './components/orbit-db-status/orbit-db-status.component';
-import { SingleArticleComponent } from './components/single-article/single-article.component';
+import { SingleArticleComponent } from './pages/single-article/single-article.component';
 import { IpfsService } from './services/ipfs.service';
 import { OrbitDbService } from './services/orbit-db.service';
 import { StatusPageComponent } from './pages/status-page/status-page.component';
@@ -29,6 +29,10 @@ import { ToolbarService } from './services/toolbar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { UnhtmlPipe } from './pipes/unhtml.pipe';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SafeHtmlPipe } from './pipes/safehtml.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,10 @@ import { MatDividerModule } from '@angular/material/divider';
     StatusPageComponent,
     ToolbarComponent,
     FooterComponent,
+    AddImageButtonComponent,
+    ImageLoaderComponent,
+    UnhtmlPipe,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -59,6 +67,8 @@ import { MatDividerModule } from '@angular/material/divider';
     ReactiveFormsModule,
     MatGridListModule,
     MatDividerModule,
+    MatSnackBarModule,
+    NgxFileDropModule,
     FormsModule,
     QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {

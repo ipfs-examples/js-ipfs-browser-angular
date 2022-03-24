@@ -1,1 +1,5 @@
-<app-article-list-item [article]="article" *ngFor="let article of articles"></app-article-list-item>
+<app-article-list-item
+  [routerLink]="['single', article._id]"
+  [article]="article"
+  *ngFor="let article of articles"
+></app-article-list-item>

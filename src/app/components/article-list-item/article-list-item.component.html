@@ -3,7 +3,7 @@
     <!-- <img class="thumbnail" [src]="'../../../assets/example-img/' + article.thumbnail"/> -->
     <div class="article-item--text">
       <div class="mat-subheading-1">{{article.title}}</div>
-      <span class="mat-caption">{{article.html}}</span>
+      <span class="mat-caption">{{article.html | unhtml }}</span>
     </div>
   </div>
 

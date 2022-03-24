@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
-import OrbitDB from 'orbit-db';
-import OrbitDb from 'orbit-db';
-import DocumentStore from 'orbit-db-docstore';
+import OrbitDb, { OrbitDB } from 'orbit-db';
 import {
   BehaviorSubject,
-  filter,
-  from,
-  Observable,
+  filter, Observable,
   Subject,
   switchMap,
-  tap,
+  tap
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IpfsService } from './ipfs.service';
@@ -18,22 +14,22 @@ export interface OrbitDbInited {
   address: string;
   identity: string;
   own: boolean;
+  instance: any;
 }
 
 export interface ArticleDTO {
+  _id: string;
+  thumbnail: string;
+  createdAt: Date;
   title: string;
   html: string;
-  // createdAt: string;
-  _id: string;
-  // thumbnail: string;
-  // video: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrbitDbService {
-  private orbitInstance: any;
+  private orbitInstance: any; // TODO: no proper typings
   private orbitStore: any;
   private orbitInitedSubject = new BehaviorSubject<OrbitDbInited | null>(null);
   public orbitInited$ = this.orbitInitedSubject
@@ -60,6 +56,7 @@ export class OrbitDbService {
         address: this.orbitStore.address.toString(),
         identity: this.orbitInstance.identity.publicKey,
         own: this.isOwnStore(),
+        instance: this.orbitInstance
       });
     });
   }
@@ -162,6 +159,15 @@ export class OrbitDbService {
       }),
       tap((x) => console.log('articles', x))
     );
+  }
+
+  public getSingleArticle(id: string) {
+    return this.replicated$.pipe(
+      switchMap(async() => {
+        const result = await this.orbitStore.get(id);
+        return result[0];
+      })
+    )
   }
 
   public async saveArticle(articleDto: ArticleDTO) {

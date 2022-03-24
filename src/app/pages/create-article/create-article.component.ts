@@ -62,14 +62,34 @@ export class CreateArticleComponent implements OnInit {
   publish(): void {
     this.lock = true;
     if (this.addArticleForm.valid) {
-      this.orbitDbService.saveArticle({
-        _id: this.addArticleForm.get('title')!.value.replace(' ', '-').toLowerCase().substring(0, 16),
-        title: this.addArticleForm.get('title')!.value,
-        html: this.addArticleForm.get('html')!.value
-      }).then((article) => {
-        console.log('saved article', article);
-        this.router.navigate(['']);
-      })
+      // TODO: pin thumbnail
+      if (this.newThumbnail) {
+        this.imageService
+          .publishImage(this.newThumbnail)
+          .subscribe((result) => {
+            console.log('image result', result);
+            this.addArticleForm.get('thumbnail')?.setValue(result.path);
+
+            this.orbitDbService
+              .saveArticle({
+                _id: this.addArticleForm
+                  .get('title')!
+                  .value.replace(' ', '-')
+                  .toLowerCase()
+                  .substring(0, 16),
+                title: this.addArticleForm.get('title')!.value,
+                html: this.addArticleForm.get('html')!.value,
+                thumbnail: this.addArticleForm.get('thumbnail')!.value,
+                createdAt: new Date(Date.now())
+              })
+              .then((article) => {
+                console.log('saved article', article);
+                this.router.navigate(['']);
+              });
+          });
+      } else {
+        alert('No thumbnail');
+      }
     }
 
   }

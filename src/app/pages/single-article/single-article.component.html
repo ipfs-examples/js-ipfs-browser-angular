@@ -1,0 +1,6 @@
+<p *ngIf="!article">Loading</p>
+<div *ngIf="article">
+  <app-image-loader [path]="article.thumbnail"></app-image-loader>
+  <h1>{{ article.title }}</h1>
+  <div [innerHtml]="article.html | safeHtml" class="article-container"></div>
+</div>

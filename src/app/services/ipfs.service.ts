@@ -9,14 +9,11 @@ import { environment } from 'src/environments/environment';
 })
 export class IpfsService {
   private _ipfsSource = new BehaviorSubject<null | IPFS>(null);
-  public ipfs$ = this._ipfsSource.asObservable().pipe(filter(x => !!x));
-  private _createIPFSNodePromise: Promise<IPFS>;
-
-  private get ipfs() {
-    const getter = async () => {
-      let node = this._ipfsSource.getValue();
-      if (node == null) {
-        console.log("Waiting node creation...")
+  public ipfs$ = this._ipfsSource
+    .asObservable()
+    .pipe(filter((x) => !!x)) as Observable<IPFS>;
+  // private _createIPFSNodePromise: Promise<IPFS>;
+  node: IPFS | null = null;
 
         node = await this._createIPFSNodePromise as IPFS;
         console.log('created node', node);
@@ -88,8 +85,66 @@ export class IpfsService {
    * @description Get the status of the current IPFS node
    * @returns {Promise<boolean>}
    */
-  async getStatus(): Promise<boolean> {
-    const node = await this.ipfs;
-    return await node.isOnline();
+  getStatus(): Observable<boolean> {
+    return this.ipfs$.pipe(map((ipfs) => ipfs!.isOnline()));
+  }
+
+  uploadFile(
+    fileContent:
+      | Uint8Array
+      | Blob
+      | Iterable<Uint8Array>
+      | Iterable<number>
+      | AsyncIterable<Uint8Array>
+      | ReadableStream<Uint8Array>
+      | ArrayBuffer
+  ): Observable<any> {
+    return this.ipfs$.pipe(
+      switchMap(async (ipfs) => {
+        console.log('fileContent', fileContent);
+        try {
+          const result = await (ipfs as any).add(fileContent);
+          console.log(result);
+          return result;
+        } catch (e) {
+          console.error(e);
+        }
+      }),
+      tap((file) => console.log('file saved', file))
+    );
+  }
+
+  getFile(path: string) {
+    return this.ipfs$.pipe(
+      switchMap((ipfs) => {
+        return from(ipfs.cat(path));
+      }),
+      first()
+    );
+  }
+
+  private cat(ipfs: any, path: string) {
+    return new Promise((resolve, reject) => {
+      ipfs.cat(path, { buffer: true }, (err: any, stream: any) => {
+        if (err) {
+          reject(err);
+        }
+        let res = '';
+
+        stream.on('data', function (chunk: any) {
+          res += chunk.toString();
+        });
+
+        stream.on('error', function (err: any) {
+          console.error(err);
+          throw new Error(`Cannot read path ${ipfs}`);
+        });
+
+        stream.on('end', function () {
+          console.log('Got:', res);
+          resolve(res);
+        });
+      });
+    });
   }
 }
