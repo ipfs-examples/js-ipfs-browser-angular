@@ -9,7 +9,7 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-
+  menu: any;
   constructor(public toolbarService: ToolbarService, private router: Router, private orbitDb: OrbitDbService) { }
 
   ngOnInit(): void {

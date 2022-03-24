@@ -36,6 +36,7 @@ import { UnhtmlPipe } from './pipes/unhtml.pipe';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SafeHtmlPipe } from './pipes/safehtml.pipe';
 import { AddImageButtonComponent } from './components/add-image-button/add-image-button.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { AddImageButtonComponent } from './components/add-image-button/add-image
     MatDividerModule,
     MatSnackBarModule,
     NgxFileDropModule,
+    MatMenuModule,
     FormsModule,
     QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
