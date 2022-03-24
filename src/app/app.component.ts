@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { IpfsService } from './services/ipfs.service';
-import { OrbitDbService } from './services/orbit-db.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',

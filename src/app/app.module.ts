@@ -1,3 +1,5 @@
+import { ImageLoaderComponent } from './components/image-loader/image-loader.component';
+import { ImageService } from './services/image.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,6 +31,8 @@ import { ToolbarService } from './services/toolbar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import { AddImageButtonComponent } from './components/add-image-button/add-image-button.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,8 @@ import { MatDividerModule } from '@angular/material/divider';
     StatusPageComponent,
     ToolbarComponent,
     FooterComponent,
+    AddImageButtonComponent,
+    ImageLoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +65,7 @@ import { MatDividerModule } from '@angular/material/divider';
     ReactiveFormsModule,
     MatGridListModule,
     MatDividerModule,
+    NgxFileDropModule,
     FormsModule,
     QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -68,11 +75,12 @@ import { MatDividerModule } from '@angular/material/divider';
       registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
-  providers: [IpfsService, OrbitDbService, ToolbarService],
+  providers: [IpfsService, OrbitDbService, ToolbarService, ImageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private orbitDbService: OrbitDbService) {
+  constructor(private orbitDbService: OrbitDbService, private ipfsService: IpfsService) {
+    this.ipfsService.init();
     this.orbitDbService.init();
   }
 }

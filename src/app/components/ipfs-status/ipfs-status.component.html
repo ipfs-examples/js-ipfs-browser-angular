@@ -1,17 +1,12 @@
-<div *ngIf="id != null; else loading" data-test="ipfs-info">
+<div *ngIf="!loading" class="ipfs-info">
+  <span>
+    {{ ipfsData }}
+  </span>
   <p>
-    <b>IPFS:</b><span data-test="ipfs-info-id">{{ id }}</span>
+    <!-- <b>Version:</b><span data-test="ipfs-info-version">{{ IPFSService.getVersion() | async }}</span> -->
   </p>
   <p>
-    <b>Version:</b><span data-test="ipfs-info-version">{{ version }}</span>
-  </p>
-  <p>
-    <b>Status:</b><span data-test="ipfs-info-status">{{ status }}</span>
+    <!-- <b>Status:</b><span data-test="ipfs-info-status">{{ IPFSService.getStatus() | async }}</span> -->
   </p>
 </div>
-
-<ng-template #loading>
-  <p>
-    <b>Loading...</b>
-  </p>
-</ng-template>
+<div *ngIf="loading">Loading...</div>

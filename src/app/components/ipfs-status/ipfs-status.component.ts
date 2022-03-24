@@ -7,20 +7,14 @@ import { IpfsService } from '../../services/ipfs.service';
   styleUrls: ['./ipfs-status.component.css']
 })
 export class IpfsStatusComponent implements OnInit {
-  id: string | null = null;
-  version: string | null  = null;
-  status: string | null  = null;
+  loading = true;
+  ipfsData = '';
   constructor(private IPFSService: IpfsService) { }
-
-  async ngOnInit(): Promise<void> {
-    const id = await this.IPFSService.getId();
-    this.id = id.id;
-
-    const version = await this.IPFSService.getVersion();
-    this.version = version.version
-
-    const status = await this.IPFSService.getStatus();
-    this.status = status ? 'Online' : 'Offline'
+  ngOnInit(): void {
+    this.IPFSService.getIPFSData().subscribe((ipfsData) => {
+      this.ipfsData = JSON.stringify(ipfsData);
+      this.loading = false;
+    });
   }
 
 }

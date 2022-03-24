@@ -1,0 +1,40 @@
+<ngx-file-drop
+accept=".png, .jpg, .jpeg"
+dropZoneLabel="Drop files here"
+[multiple]="false"
+(onFileDrop)="dropped($event)"
+dropZoneClassName="drop-zone"
+>
+<ng-template
+  ngx-file-drop-content-tmp
+  let-openFileSelector="openFileSelector"
+>
+  <button
+    mat-button
+    [style.background-image]="
+      imagePath ? 'url(' + imagePath + ')' : 'none'
+    "
+    (click)="invokeSelector($event, openFileSelector)"
+  >
+    <div
+      (click)="invokeSelector($event, openFileSelector)"
+      mat-button
+    >
+      <!-- TODO: add preview -->
+
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <a class="add-pic-icon"></a>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <span class="first-span">
+          Kliknij lub upuść obrazek, aby dodać miniaturkę
+        </span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <span class="span-2">Minimalny rozmiar: 400 x 600 px</span>
+        <span class="span-3">Maksymalna waga: 3 MB</span>
+      </div>
+    </div>
+  </button>
+</ng-template>
+</ngx-file-drop>

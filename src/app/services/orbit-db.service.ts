@@ -25,7 +25,7 @@ export interface ArticleDTO {
   html: string;
   // createdAt: string;
   _id: string;
-  // thumbnail: string;
+  thumbnail: string;
   // video: string;
 }
 
