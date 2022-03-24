@@ -20,7 +20,7 @@ export interface OrbitDbInited {
 export interface ArticleDTO {
   _id: string;
   thumbnail: string;
-  createdAt: Date;
+  createdAt: number;
   title: string;
   html: string;
 }
@@ -152,7 +152,7 @@ export class OrbitDbService {
   }
 
   public getArticles$(skip = 0): Observable<ArticleDTO[]> {
-    return this.replicated$.pipe(
+    return this.orbitInited$.pipe(
       switchMap(async () => {
         const results = await this.orbitStore.get('');
         return results;
@@ -162,9 +162,11 @@ export class OrbitDbService {
   }
 
   public getSingleArticle(id: string) {
-    return this.replicated$.pipe(
+    return this.orbitInited$.pipe(
       switchMap(async() => {
+        console.log('getting id', id);
         const result = await this.orbitStore.get(id);
+        console.log('got result', result);
         return result[0];
       })
     )

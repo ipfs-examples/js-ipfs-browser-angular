@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   rootDirectory: 'example-uncensorable-dapp',
-  rootAddress: '/orbitdb/zdpuAsifVFTvh93FQcz2zxxbBeu5javxrk5NAEPv8PL1qB3xQ/example-uncensorable-dapp',
+  rootAddress: '/orbitdb/zdpuAqULV5JMoCaMDnAHwhapD2Rk87f1AHBXgMNiFevekZZmF/example-uncensorable-dapp',
   IPFSConfigAddresses: {
     Gateway: 'http://127.0.0.1:8080',
     API: '/ip4/127.0.0.1/tcp/5001',

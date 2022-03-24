@@ -20,27 +20,11 @@ export class ArticlesListComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.orbitDb.orbitInited$.subscribe(
-      (orbitDbInited: OrbitDbInited | null) => {
-        this.own = orbitDbInited!.own;
-        if (this.own) {
-          this.toolbarService.setButtons({
-            buttons: [
-              {
-                icon: 'add',
-                label: 'New article',
-                link: 'create-article'
-              },
-            ],
-          });
-        }
-      }
-    );
+
     this.orbitDb.getArticles$().subscribe((articles: ArticleDTO[]) => {
       console.log('got articles', articles);
       this.articles = articles;
     });
-    this.toolbarService.setButtons({ buttons: [] });
     this.toolbarService.setTitle('List of articles');
     this.toolbarService.setBackButton(false);
   }

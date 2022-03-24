@@ -2,7 +2,6 @@ import { IpfsService } from './ipfs.service';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
-const MFS_DIR = 'thumbnails';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +12,6 @@ export class ImageService {
 
   publishImage(file: File) {
     // TODO: image validation
-    
     return this.ipfsService.uploadFile(file);
   }
 

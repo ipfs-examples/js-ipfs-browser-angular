@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrbitDbInited, OrbitDbService } from 'src/app/services/orbit-db.service';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 
 @Component({
@@ -9,9 +10,24 @@ import { ToolbarService } from 'src/app/services/toolbar.service';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor(public toolbarService: ToolbarService, private router: Router) { }
+  constructor(public toolbarService: ToolbarService, private router: Router, private orbitDb: OrbitDbService) { }
 
   ngOnInit(): void {
+    this.orbitDb.orbitInited$.subscribe(
+      (orbitDbInited: OrbitDbInited | null) => {
+        if (orbitDbInited!.own) {
+          this.toolbarService.setButtons({
+            buttons: [
+              {
+                icon: 'add',
+                label: 'New article',
+                link: 'create-article'
+              },
+            ],
+          });
+        }
+      }
+    );
   }
 
   back(): void {

@@ -46,7 +46,8 @@ export class CreateArticleComponent implements OnInit {
     private router: Router) {
     this.addArticleForm = this.formBuilder.group({
       title: ['', Validators.required],
-      html: ['', Validators.required]
+      html: ['', Validators.required],
+      thumbnail: ['']
     });
   }
   ngOnInit(): void {
@@ -83,7 +84,7 @@ export class CreateArticleComponent implements OnInit {
                 title: this.addArticleForm.get('title')!.value,
                 html: this.addArticleForm.get('html')!.value,
                 thumbnail: this.addArticleForm.get('thumbnail')!.value,
-                createdAt: new Date(Date.now())
+                createdAt: Date.now()
               })
               .then((article) => {
                 console.log('saved article', article);
@@ -103,6 +104,10 @@ export class CreateArticleComponent implements OnInit {
 
   onContentChanged(e: any) {
     this.addArticleForm.controls.html.setValue(e.html);
+  }
+
+  loaded($event: any) {
+    this.newThumbnail = $event;
   }
 
 }

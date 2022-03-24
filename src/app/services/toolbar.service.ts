@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
 
 export interface Options {
   buttons: {
@@ -12,7 +13,8 @@ export interface Options {
 @Injectable()
 export class ToolbarService {
   currentTitle: string = '';
-  currentOptions: Options = { buttons: [] };
+  currentOptionsSubject = new BehaviorSubject<Options>({ buttons: [ ]});
+  currentOptions$ = this.currentOptionsSubject.asObservable();
   backButton = false;
 
   setBackButton(backButton: boolean) {
@@ -20,7 +22,7 @@ export class ToolbarService {
   }
 
   setButtons(options: Options): void {
-    this.currentOptions = options;
+    this.currentOptionsSubject.next(options);
   }
 
   setTitle(title: string): void {
