@@ -1,0 +1,47 @@
+mat-list-item > *{
+  cursor: pointer;
+  height: 100px;
+  width: 100%;
+}
+
+.thumbnail {
+  width: 145px;
+  height: 80px;
+  margin: 8px 8px 8px 8px;
+}
+.article-item--root {
+  display: flex;
+  flex-direction: column;
+width: 100%;
+cursor: pointer;
+background-color: #222b45;
+box-sizing: border-box;
+margin-bottom: 24px;
+border-radius: 4px;
+}
+.article-item--text {
+  max-height: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0 16px 24px 16px;
+  box-sizing: border-box;
+}
+app-image-loader {
+  width: 100%;
+ 
+}
+
+.mat-subheading-1 {
+  font-size: 20px;
+  margin-top: 16px;
+  font-weight: bold;
+}
+.article-item--root:hover {
+  .mat-subheading-1 {
+    text-decoration: underline;
+  }
+  -webkit-box-shadow: 0px 0px 49px -3px rgba(0,0,0,0.85);
+-moz-box-shadow: 0px 0px 49px -3px rgba(0,0,0,0.85);
+box-shadow: 0px 0px 49px -3px rgba(0,0,0,0.85);
+}

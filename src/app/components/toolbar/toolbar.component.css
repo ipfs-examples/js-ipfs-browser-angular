@@ -1,2 +1,11 @@
 .toolbar-options {
 }
+mat-toolbar {
+    display: flex;
+    align-items: center;
+    place-content: space-between;
+    
+}
+::ng-deep .mat-menu-panel {
+    background: #151a30;
+}

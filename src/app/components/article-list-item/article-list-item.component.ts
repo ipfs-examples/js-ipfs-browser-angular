@@ -9,7 +9,7 @@ export interface ArticleListItem {
 @Component({
   selector: 'app-article-list-item',
   templateUrl: './article-list-item.component.html',
-  styleUrls: ['./article-list-item.component.css'],
+  styleUrls: ['./article-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArticleListItemComponent implements OnInit {

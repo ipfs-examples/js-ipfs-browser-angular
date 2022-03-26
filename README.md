@@ -7,143 +7,212 @@
 <h3 align="center"><b>dPress</b></h3>
 <h4>Censorship-resistant blog platform</h4>
 
-<p align="center">
-  <b><i>Using js-ipfs with `Angular`</i></b>
-  <br />
-  <br />
-  <img src="https://raw.githubusercontent.com/jlord/forkngo/gh-pages/badges/cobalt.png" width="200">
-  <br>
-  <a href="https://github.com/ipfs/js-ipfs/tree/master/docs">Explore the docs</a>
-  ·
-  <a href="https://codesandbox.io/">View Demo</a>
-  ·
-  <a href="https://github.com/ipfs/js-ipfs/issues">Report Bug</a>
-  ·
-  <a href="https://github.com/ipfs/js-ipfs/issues">Request Feature</a>
-</p>
 
-## Table of Contents
+## PREREQUISITES
 
-- [Table of Contents](#table-of-contents)
-- [About The Project](#about-the-project)
-- [Getting Started](#getting-started)
-  - [Pre requisites](#pre-requisites)
-  - [Installation and Running example](#installation-and-running-example)
-  - [Available Scripts from create-react-app](#available-scripts-from-create-react-app)
-    - [Development server](#development-server)
-    - [Code scaffolding](#code-scaffolding)
-    - [Build](#build)
-    - [Running unit tests](#running-unit-tests)
-    - [Running end-to-end tests](#running-end-to-end-tests)
-    - [Further help](#further-help)
-- [Usage](#usage)
-- [References](#references)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [Want to hack on IPFS?](#want-to-hack-on-ipfs)
+- node.js v16
+- IPFS Desktop/CLI (https://github.com/ipfs/ipfs-desktop/releases)
 
-## About The Project
 
-- Read the [docs](https://github.com/ipfs/js-ipfs/tree/master/docs)
-- Look into other [examples](https://github.com/ipfs-examples/js-ipfs-examples) to learn how to spawn an IPFS node in Node.js and in the Browser
-- Consult the [Core API docs](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api) to see what you can do with an IPFS node
-- Visit https://dweb-primer.ipfs.io to learn about IPFS and the concepts that underpin it
-- Head over to https://proto.school to take interactive tutorials that cover core IPFS APIs
-- Check out https://docs.ipfs.io for tips, how-tos and more
-- See https://blog.ipfs.io for news and more
-- Need help? Please ask 'How do I?' questions on https://discuss.ipfs.io
+## DEVELOPMENT
 
-## Getting Started
+Let's try to run IPFS network on LAN network
 
-### Pre requisites
-
-Make sure you have installed all of the following prerequisites on your development machine:
-
-- Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
-### Installation and Running example
-
-```console
-> npm install
-> npm start
+we need to lookup IP address of our PC (let's say our main PC has local IP 10.0.0.2, and second testing device has IP 10.0.0.3)
+- after installing node and IPFS open IPFS's config file (~/<username>/.ipfs/config on Linux, or C:\Users\<username>\.ipfs\config on Windows)
+- put following config
+```
+{
+  "API": {
+    "HTTPHeaders": {}
+  },
+  "Addresses": {
+    "API": "/ip4/10.0.0.2/tcp/5001",
+    "Announce": [],
+    "AppendAnnounce": null,
+    "Gateway": "/ip4/10.0.0.2/tcp/8080",
+    "NoAnnounce": [],
+    "Swarm": [
+      "/ip4/0.0.0.0/tcp/4001",
+      "/ip6/::/tcp/4001",
+      "/ip4/0.0.0.0/udp/4001/quic",
+      "/ip6/::/udp/4001/quic"
+    ]
+  },
+  "AutoNAT": {},
+  "Bootstrap": [
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb",
+    "/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt",
+    "/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
+    "/ip4/104.131.131.82/udp/4001/quic/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"
+  ],
+  "DNS": {
+    "Resolvers": {}
+  },
+  "Datastore": {
+    "BloomFilterSize": 0,
+    "GCPeriod": "1h",
+    "HashOnRead": false,
+    "Spec": {
+      "mounts": [
+        {
+          "child": {
+            "path": "blocks",
+            "shardFunc": "/repo/flatfs/shard/v1/next-to-last/2",
+            "sync": true,
+            "type": "flatfs"
+          },
+          "mountpoint": "/blocks",
+          "prefix": "flatfs.datastore",
+          "type": "measure"
+        },
+        {
+          "child": {
+            "compression": "none",
+            "path": "datastore",
+            "type": "levelds"
+          },
+          "mountpoint": "/",
+          "prefix": "leveldb.datastore",
+          "type": "measure"
+        }
+      ],
+      "type": "mount"
+    },
+    "StorageGCWatermark": 90,
+    "StorageMax": "10GB"
+  },
+  "Discovery": {
+    "MDNS": {
+      "Enabled": true,
+      "Interval": 10
+    }
+  },
+  "Experimental": {
+    "AcceleratedDHTClient": false,
+    "FilestoreEnabled": false,
+    "GraphsyncEnabled": false,
+    "Libp2pStreamMounting": false,
+    "P2pHttpProxy": false,
+    "StrategicProviding": false,
+    "UrlstoreEnabled": false
+  },
+  "Gateway": {
+    "APICommands": [],
+    "HTTPHeaders": {
+      "Access-Control-Allow-Headers": [
+        "X-Requested-With",
+        "Range",
+        "User-Agent"
+      ],
+      "Access-Control-Allow-Methods": [
+        "GET"
+      ],
+      "Access-Control-Allow-Origin": [
+        "*"
+      ]
+    },
+    "NoDNSLink": false,
+    "NoFetch": false,
+    "PathPrefixes": [],
+    "PublicGateways": null,
+    "RootRedirect": "",
+    "Writable": false
+  },
+  "Identity": {
+    "PeerID": "12D3KooWHHcwhVgQmnHvCgGAkRxRzUyNnr7g3ixNErUBeVJghGc9",
+    "PrivKey": "CAESQFGrvT1ZiA24xlMxSDMWzzJ4GFAb9+ZQ0Y7c9W/chJAJbv0yUgMnBDnMf+uYX2WRYmCIT3g82LpTk/a+1jP+J+I="
+  },
+  "Internal": {},
+  "Ipns": {
+    "RecordLifetime": "",
+    "RepublishPeriod": "",
+    "ResolveCacheSize": 128
+  },
+  "Migration": {
+    "DownloadSources": [],
+    "Keep": ""
+  },
+  "Mounts": {
+    "FuseAllowOther": false,
+    "IPFS": "/ipfs",
+    "IPNS": "/ipns"
+  },
+  "Peering": {
+    "Peers": null
+  },
+  "Pinning": {
+    "RemoteServices": {}
+  },
+  "Plugins": {
+    "Plugins": null
+  },
+  "Provider": {
+    "Strategy": ""
+  },
+  "Pubsub": {
+    "DisableSigning": false,
+    "Router": ""
+  },
+  "Reprovider": {
+    "Interval": "12h",
+    "Strategy": "all"
+  },
+  "Routing": {
+    "Type": "dht"
+  },
+  "Swarm": {
+    "AddrFilters": null,
+    "ConnMgr": {
+      "GracePeriod": "300s",
+      "HighWater": 300,
+      "LowWater": 50,
+      "Type": "basic"
+    },
+    "DisableBandwidthMetrics": false,
+    "DisableNatPortMap": false,
+    "RelayClient": {},
+    "RelayService": {},
+    "Transports": {
+      "Multiplexers": {},
+      "Network": {},
+      "Security": {}
+    }
+  }
+}
 ```
 
-Now open your browser at `http://localhost:4200`
+where 10.0.0.2 is IP of your IPFS server
 
-### Available Scripts from create-react-app
+let's configure frontend now
 
-In the project directory, you can run:
+- install Angular CLI
+```
+npm install -g @angular/cli
+```
+- clone project
+```
+git@github.com:ipfs-examples/js-ipfs-browser-angular.git
+```
 
-#### Development server
+- open src/environment.ts file
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- replace all 10.0.0.2 with address of your IPFS server
+- remove "rootAdddress" string (make '' empty)
 
-#### Code scaffolding
+- `npm install`
+- `npm start -- --host=10.0.0.2`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+after compilation app will available at 10.0.0.2:4200
 
-#### Build
+after first visit your Identity keys will be created and stored by the browser
+also OrbitDb database will be created
+go to "Debug info" page and copy your newly created address to "rootAddress" value in src/environment.ts
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+app will check the ownership of database and allow you to publish new articles
 
-#### Running unit tests
+Articles will be pinned by your IPFS node. After visiting website from other (10.0.0.3) device your articles should be loaded, but without permissions to add new articles.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-#### Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-#### Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-## Usage
-
-A minimal demonstration of how to use js-ipfs in a `angular` generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.2.
-
-Check the `ipfs.service.ts` file to how to use the basic of ipfs.
-
-_For more examples, please refer to the [Documentation](#documentation)_
-
-## References
-
-- Documentation:
-  - [IPFS CONFIG](https://github.com/ipfs/js-ipfs/blob/master/docs/CONFIG.md)
-  - [MISCELLANEOUS](https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/MISCELLANEOUS.md)
-
-## Documentation
-
-- [Config](https://docs.ipfs.io/)
-- [Core API](https://github.com/ipfs/js-ipfs/tree/master/docs/core-api)
-- [Examples](https://github.com/ipfs-examples/js-ipfs-examples)
-- [Development](https://github.com/ipfs/js-ipfs/blob/master/docs/DEVELOPMENT.md)
-- [Tutorials](https://proto.school)
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the IPFS Project
-2. Create your Feature Branch (`git checkout -b feature/amazing-feature`)
-3. Commit your Changes (`git commit -a -m 'feat: add some amazing feature'`)
-4. Push to the Branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Want to hack on IPFS?
-
-[![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/CONTRIBUTING.md)
-
-The IPFS implementation in JavaScript needs your help! There are a few things you can do right now to help out:
-
-Read the [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md) and [JavaScript Contributing Guidelines](https://github.com/ipfs/community/blob/master/CONTRIBUTING_JS.md).
-
-- **Check out existing issues** The [issue list](https://github.com/ipfs/js-ipfs/issues) has many that are marked as ['help wanted'](https://github.com/ipfs/js-ipfs/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22help+wanted%22) or ['difficulty:easy'](https://github.com/ipfs/js-ipfs/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Adifficulty%3Aeasy) which make great starting points for development, many of which can be tackled with no prior IPFS knowledge
-- **Look at the [IPFS Roadmap](https://github.com/ipfs/roadmap)** This are the high priority items being worked on right now
-- **Perform code reviews** More eyes will help
-  a. speed the project along
-  b. ensure quality, and
-  c. reduce possible future bugs.
-- **Add tests**. There can never be enough tests.
-- **Join the [Weekly Core Implementations Call](https://github.com/ipfs/team-mgmt/issues/992)** it's where everyone discusses what's going on with IPFS and what's next
+Work in progress...

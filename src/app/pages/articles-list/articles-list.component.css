@@ -1,0 +1,7 @@
+.articles-list {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    flex-wrap: wrap;
+    place-content: space-between;
+}

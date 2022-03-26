@@ -1,4 +1,6 @@
+
 <mat-list-item  *ngIf="article">
+
   <div matRipple class="article-item--root">
     <app-image-loader [path]="article.thumbnail"></app-image-loader>
     <div class="article-item--text">
@@ -6,6 +8,5 @@
       <span class="mat-caption">{{article.html | unhtml }}</span>
     </div>
   </div>
-
 
 </mat-list-item>

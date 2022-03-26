@@ -7,3 +7,9 @@
 body {
   margin: 0px;
 }
+.mat-toolbar.mat-primary {
+  background: #222b45;
+}
+* {
+  color: aliceblue;
+}

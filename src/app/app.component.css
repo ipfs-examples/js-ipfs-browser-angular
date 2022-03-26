@@ -3,6 +3,8 @@
 }
 .content {
   height: calc(100vh - 128px);
+  background-color: #151a30;
+  overflow: auto;
 }
 .footer {
   height: 64px;

@@ -7,11 +7,11 @@ import {
   first,
   from,
   map,
-  Observable, switchMap,
-  tap
+  Observable,
+  switchMap,
+  tap,
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
 
 @Injectable({
   providedIn: 'root',
@@ -41,35 +41,14 @@ export class IpfsService {
     if (this.node == null) {
       console.log('Waiting node creation...');
 
-      this.node = (await create({
-        start: true,
-        repo: environment.rootDirectory,
-        EXPERIMENTAL: {
-          ipnsPubsub: true,
-        },
-        config: {
-          Addresses: environment.IPFSConfigAddresses,
-          Discovery: {
-            MDNS: {
-              Enabled: false,
-              Interval: 10,
-            },
-            webRTCStar: {
-              Enabled: true,
-            },
-          },
-          Bootstrap: [
-            '/dns4/wss0.bootstrap.libp2p.io/tcp/443/wss/ipfs/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic',
-            '/dns4/wss1.bootstrap.libp2p.io/tcp/443/wss/ipfs/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6',
-          ],
-        },
-      })) as IPFS;
+      this.node = (await create(environment.IPFSConfig)) as IPFS;
       console.log(this.node);
-      // await this.syncDirectories();
+
+      await this.connectToPeers();
+      setInterval(async () => await this.connectToPeers(), 15000)
       this._ipfsSource.next(this.node);
     }
   }
-
 
 
   /**
@@ -130,6 +109,23 @@ export class IpfsService {
     );
   }
 
+  private async connectToPeers() {
+    if (!this.node) {
+      throw new Error('IPFS node not initalized');
+    }
+    const peers = await this.node!.swarm.peers();
+    console.log('peers', peers);
+    await Promise.all(peers.map(async (peer: any) => {
+      if (peers.indexOf(peer) !== -1) return
+      try {
+          await this.node!.ping(peer)
+          await this.node!.swarm.connect("/p2p-circuit/ipfs/" + peer)
+      } catch (e) {
+          console.error(e)
+      }
+  }))
+  }
+
   private cat(ipfs: any, path: string) {
     return new Promise((resolve, reject) => {
       ipfs.cat(path, { buffer: true }, (err: any, stream: any) => {
@@ -154,4 +150,6 @@ export class IpfsService {
       });
     });
   }
+
+
 }

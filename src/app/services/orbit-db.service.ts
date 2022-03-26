@@ -121,7 +121,7 @@ export class OrbitDbService {
       environment.rootAddress,
       {
         create: true,
-        sync: true,
+        sync: false,
       }
     );
     console.log('loaded store', this.orbitStore);
